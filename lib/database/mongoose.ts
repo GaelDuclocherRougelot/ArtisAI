@@ -23,7 +23,12 @@ export const connectToDatabase = async () => {
 
   cached.promise =
     cached.promise ||
-    mongoose.connect(MONGODB_URL, { dbName: "artisai", bufferCommands: false });
+    mongoose.connect(MONGODB_URL, {
+      dbName: "artisai",
+      bufferCommands: false,
+    });
 
-  cached.conn = await cached.promise; 
+  cached.conn = await cached.promise;
+
+  return cached.conn;
 };

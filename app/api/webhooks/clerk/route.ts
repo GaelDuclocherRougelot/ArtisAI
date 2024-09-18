@@ -63,8 +63,8 @@ export async function POST(req: Request) {
       clerkId: id,
       email: email_addresses[0].email_address,
       username: username!,
-      firstName: first_name || "",
-      lastName: last_name || "",
+      firstName: first_name!,
+      lastName: last_name!,
       photo: image_url,
     };
 
@@ -87,15 +87,15 @@ export async function POST(req: Request) {
     const { id, image_url, first_name, last_name, username } = evt.data;
 
     const user: UpdateUserParams = {
-      firstName: first_name || "",
-      lastName: last_name || "",
+      firstName: first_name!,
+      lastName: last_name!,
       username: username!,
       photo: image_url,
     };
 
-    const updatedUser = await updateUser(id, user);
+    // const updatedUser = await updateUser(id, user);
 
-    return NextResponse.json({ message: "OK", user: updatedUser });
+    return NextResponse.json({status: 200, message: "OK", user: user });
   }
 
   // DELETE
@@ -106,9 +106,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: "OK", user: deletedUser });
   }
-
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
 
   return new Response("", { status: 200 });
 }

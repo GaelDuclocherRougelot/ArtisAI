@@ -1,7 +1,7 @@
+import Header from "@/components/shared/Header";
+
 export default function Home() {
   return (
-    <div>
-      <p>Home</p>
-    </div>
+    <Header title="Welcome back !" />
   );
 }

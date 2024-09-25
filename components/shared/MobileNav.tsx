@@ -15,7 +15,7 @@ const MobileNav = () => {
   return (
     <header className="header">
       <ImageLink
-        src="/assets/images/logo-text.svg"
+        src="/assets/images/logo-text.png"
         href="/"
         width={180}
         height={28}
@@ -41,7 +41,7 @@ const MobileNav = () => {
           <SheetContent className="sheet-content sm:w-64">
             <>
               <Image
-                src="assets/images/logo-text.svg"
+                src="/assets/images/logo-text.png"
                 width={152}
                 height={23}
                 alt="logo"

@@ -1,5 +1,8 @@
+"use client";
 import { useToast } from "@/hooks/use-toast";
-import { CldUploadWidget } from "next-cloudinary";
+import { dataUrl, getImageSize } from "@/lib/utils";
+import { CldImage, CldUploadWidget } from "next-cloudinary";
+import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 
 type MediaUploaderProps = {
@@ -20,6 +23,16 @@ const MediaUploder = ({
   const { toast } = useToast();
 
   const onUploadSuccessHandler = (result: any) => {
+    setImage((prevState: any) => ({
+      ...prevState,
+      publicId: result?.info?.public_id,
+      width: result?.info?.width,
+      height: result?.info?.height,
+      secureURL: result?.info?.secure_url,
+    }));
+
+    onValueChange(result?.info?.public_id);
+
     toast({
       title: "Image uploaded successfully",
       description: "1 credit was deducted from your account",
@@ -28,7 +41,7 @@ const MediaUploder = ({
     });
   };
 
-  const onUploadErrorHandler = (result: any) => {
+  const onUploadErrorHandler = () => {
     toast({
       title: "Somthing went wrong while uploading",
       description: "Please try again",
@@ -50,7 +63,19 @@ const MediaUploder = ({
         <div className="flex flex-col gap-4">
           <h3 className="h3-bold text-dark-600">Original</h3>
           {publicId ? (
-            <>HERE IS THE IMAGE</>
+            <>
+              <div className="cursor-pointer overflow-hidden rounded-[10px]">
+                <CldImage
+                  src={publicId}
+                  width={getImageSize(type, image, "width")}
+                  height={getImageSize(type, image, "height")}
+                  alt="image"
+                  sizes={"(max-width: 767px) 100vw, 50vw"}
+                  placeholder={dataUrl as PlaceholderValue}
+                  className="media-uploader_cldImage"
+                />
+              </div>
+            </>
           ) : (
             <div className="media-uploader_cta" onClick={() => open()}>
               <div className="media-uploader_cta-image">

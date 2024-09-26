@@ -2,6 +2,7 @@
 import { createTransaction } from "@/lib/actions/transaction.action";
 import { NextResponse } from "next/server";
 import stripe from "stripe";
+import { string } from "zod";
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -23,6 +24,14 @@ export async function POST(request: Request) {
   // CREATE
   if (eventType === "checkout.session.completed") {
     const { id, amount_total, metadata } = event.data.object;
+
+    const isValidObjectId = (id: string = "") => {
+      return /^[0-9a-fA-F]{24}$/.test(id);
+    };
+    
+    if (!isValidObjectId(metadata?.buyerId)) {
+      throw new Error('Invalid buyer ID');
+    }
 
     const transaction = {
       stripeId: id,
